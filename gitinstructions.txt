@@ -1,0 +1,5 @@
+Git common instructions
+
+ls    列举此目录下的所有可见文件
+ls    -ah 列举当前目录下的所有文件，包括隐藏文件
+cd    进入某某文件夹，在cd后添加文件夹路径

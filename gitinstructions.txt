@@ -43,3 +43,13 @@ git reset HEAD file
 	把暂缓区的修改回退到工作区，即取消add进暂缓区的修改
 git rm
 	用于在版本库内删除一个文件。
+	
+	
+git push origin master
+	本地提交后，此命令推送最新更新
+git push -u origin master
+	将本地的master分支推送到origin主机，同时指定origin为默认主机，后面就可以不加任何参数使用git push了。
+git push
+	简单方式，默认只推送当前分支
+git clone
+	克隆远程仓库，需要知道仓库地址

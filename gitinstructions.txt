@@ -1,5 +1,6 @@
 Git common instructions
 
+Linux指令：
 ls
 	列举此目录下的所有可见文件
 ls -ah
@@ -15,7 +16,7 @@ cat
 rm
 	rm 后加文件名，可以删除文件管理器中没用的文件
 	
-	
+本地仓库：
 git init
 	把这个当前目录（你进入的目录为选中目录）变成Git可以管理的仓库
 git add
@@ -44,12 +45,61 @@ git reset HEAD file
 git rm
 	用于在版本库内删除一个文件。
 	
+git checkout -b dev
+	创建一个新的分支dev， git check 命令加上-b参数表示创建并切换，相当于这两条指令：
+	git branch dev 
+	git checkout dev
+git branch
+	查看当前分支，会列出所有分支，当前分支有*号
+git checkout +分支名
+	切换分支，例如 git checkout master 为切换回主分支
+git merge +分支名
+	合并某分支到当前分支，例如 git merge dev 把dev分支的工作结果合并到master分支上
+	---有可能会出现无法自动合并分支的情况，这时候需要首先手动解决冲突。解决冲突之后再提交
+git branch -d +分支名
+	删除某分支
+git branch -D +分支名
+	强行删除某分支，用于未合并的情况。
 	
+git log --graph --pretty=oneline --abbrev-commit
+	用带参数的git log可以看到分支的合并情况
+
+git merge --no--ff -m "merge with no-ff" dev
+	--no-ff 是个参数，表示禁用Fast forward。使用Fast forward在合并后会丢失分支的数据，没有历史保留。加--no-ff是为了能在历史版本里留下历史，方便后续回找。后面的-m就是要创建一个新的commit
+	
+git stash
+	把当前工作现场储存起来，等以后恢复现场之后再继续工作
+git stash list
+	可以查看原先的工作现场
+	$ git stash list
+	stash@{0}: WIP on dev: 6224937 add merge
+git stash apply
+	可以恢复现场，但是恢复之后，stash内容并不删除。使用： git stash apply stash@{0}
+git stash pop
+	恢复现场的同时，把stash内容也删除
+git stash drop
+	删除stash内容
+	
+	
+远程仓库：
 git push origin master
-	本地提交后，此命令推送最新更新
+	本地提交后，此命令推送最新更新。后面的master为分支名，可以换成其他分支
 git push -u origin master
 	将本地的master分支推送到origin主机，同时指定origin为默认主机，后面就可以不加任何参数使用git push了。
 git push
 	简单方式，默认只推送当前分支
 git clone
 	克隆远程仓库，需要知道仓库地址
+git remote
+	查看远程库的信息
+git remote -v 
+	显示远程库更详细的信息
+	
+	
+	
+多人协作的工作模式：
+	1. 首先，可以试图用git push origin branch-name推送自己的修改；
+	2. 如果推送失败，则因为远程分支比你的本地更新，需要先用git pull试图合并；
+	3. 如果合并有冲突，则解决冲突，并在本地提交；
+	4. 没有冲突或者解决掉冲突后，再用git push origin branch-name推送就能成功！
+	如果git pull提示“no tracking information”，则说明本地分支和远程分支的链接关系没有创建，用命令git branch --set-upstream branch-name origin/branch-name。

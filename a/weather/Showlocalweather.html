@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+*{
+  margin:0;
+  padding:0;
+}
+body{
+  background-color:#a8d9ff;
+  font:14px/1.5 Arial;
+  color:#333;
+}
+.weather-box{
+  margin:8% auto;
+  width:300px;
+  box-shadow:2px 2px 2px #999;
+  background-color:rgba(255,255,255,0.8);
+  border-radius:5px;
+  padding:20px;
+}
+#city{
+  font-size:16px;
+}
+#cond{
+  font-size:14px;
+  text-align:center;
+  font-weight:700;
+  padding:10px 0;
+}
+.tem{
+  position:relative;
+  text-align:center;
+  font-weight:700;
+  font-size:50px;
+  margin:20px 0;
+}
+#condcode{
+  position:absolute;
+  top:-40px;
+  left:185px;
+}
+.other{
+  margin:5px 0;
+}
+.other div{
+  width:24%;
+  display:inline-block;
+  text-align:center;
+  background-color:#d0e9ff;
+  border-radius:3px;
+  line-height:35px;
+}
+.otherC{
+  font-weight:700;
+  font-size:16px;
+}
+</style>
+<script src = "../../js/jquery.min.js"></script>
+<script>
+	$(document).ready(function(){
+		var nowDate = new Date();
+		var nowDateValue = nowDate.getFullYear() + "/" + (nowDate.getMonth()+1) + "/" + nowDate.getDate() + " 星期";
+		var nowWeek = nowDate.getDay();
+		switch(nowWeek){
+			case 0:
+				nowDateValue += "日";
+				break;
+			case 1:
+				nowDateValue += "一";
+				break;
+			case 2:
+				nowDateValue += "二";
+				break;
+			case 3:
+				nowDateValue += "三";
+				break;
+			case 4:
+				nowDateValue += "四";
+				break;
+			case 5:
+				nowDateValue += "五";
+				break;
+			case 6:
+				nowDateValue += "六";
+				break;
+		}
+		var localUrl = "https://api.map.baidu.com/location/ip?ak=t8zLPq17bCNVeU10RjaaRAIOKsIYZDI6&coor=bd09ll";
+		//$.getJSON(localUrl,function(localData){
+			//console.log(localData);
+		//});
+		$.getJSON(localUrl,function(localData){
+			console.log(localData);
+		});
+		//https://api.map.baidu.com/location/ip?ak=t8zLPq17bCNVeU10RjaaRAIOKsIYZDI6
+		$.ajax({
+			url:"https://api.map.baidu.com/location/ip?ak=t8zLPq17bCNVeU10RjaaRAIOKsIYZDI6",
+			type:"GET",
+			dataType:"JSONP",
+			success:function(localData){
+				//console.log(localData.content.address_detail.city);
+				var adCity = localData.content.address_detail.city;
+				var adPro = localData.content.address_detail.province;
+				//console.log(adPro);
+				var url = "https://free-api.heweather.com/v5/now?city=" + adCity + "&key=0c4bc89588f54b4984178f8d49587f7b";
+				$.getJSON(url,function(data){
+				//console.log(data.HeWeather5[0].basic.city);
+				var wCity = adCity + "，" + adPro;
+				var wCond = data.HeWeather5[0].now.cond.txt;
+				var wTmp = data.HeWeather5[0].now.tmp;
+				var wCondCode = data.HeWeather5[0].now.cond.code;
+				var wFl = data.HeWeather5[0].now.fl;
+				var wHum = data.HeWeather5[0].now.hum;
+				var wVis = data.HeWeather5[0].now.vis;
+				var wWind = data.HeWeather5[0].now.wind.sc;
+				$("#city").text(wCity);
+				$("#date").text(nowDateValue);
+				$("#cond").text(wCond);
+				$("#tmp span").text(wTmp);
+				$("#condcode img").attr("src","images/" + wCondCode + ".png");
+				$("#fl span").text(wFl);
+				$("#hum span").text(wHum);
+				$("#vis span").text(wVis);
+				$("#wind").text(wWind);
+		});
+			}
+		});
+	});
+</script>
+</head>
+	
+	
+	
+	<body>
+		<div class = "weather-box">
+			<p id = "city"></p>
+			<p id = "date"></p>
+			<div class = "tem">
+				<p id = "cond"></p>
+				<p id = "tmp"><span></span>℃</p>
+				<div id = "condcode">
+					<img src = "">
+				</div>
+			</div>
+			<div class = "other">
+				<div>
+					<p>体感温度</p>
+					<p id = "fl" class = "otherC"><span></span>℃</p>
+				</div>
+				<div>
+					<p>相对湿度</p>
+					<p id = "hum" class = "otherC"><span></span>%</p>
+				</div>
+				<div>
+					<p>能见度</p>
+					<p id = "vis" class = "otherC"><span></span>km</p>
+				</div>
+				<div>
+					<p>风&nbsp;&nbsp;&nbsp;&nbsp;力</p>
+					<p id = "wind" class = "otherC"></p>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

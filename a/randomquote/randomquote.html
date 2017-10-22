@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+<meta charset = "utf-8" />
+<head>
+	<title>随机引用短语</title>
+	<link rel = "stylesheet" href = "../../css/font-awesome.min.css">
+	<style>
+	*{
+		margin:0;
+		padding:0;
+	}
+	body{
+		background-color:#1C86EE;
+	}
+	.quote-box{
+		width:550px;
+		height:260px;
+		margin:8% auto;
+		position:relative;
+	}
+	.quote-text{
+		width:550px;
+		padding:40px 50px;
+		background-color:rgba(255,255,255,1);
+		border-radius:3px;
+		font:26px/1.5 Arial;
+		color:#1C86EE;
+		text-align:center;
+		box-shadow:2px 2px 5px #666;
+		letter-spacing:3px;
+		position:absolute;
+		top:0;
+		left:0;
+		z-index:10;
+	}
+	.quote-text span{
+		display:block;
+		font-size:18px;
+		text-align:right;
+		line-height:3em;
+	}
+	.share{
+		display:inline-block;
+		width:80px;
+		text-align:right;
+		padding-right:10px;
+		line-height:50px;
+		background-color:rgba(255,255,255,0.8);
+		font-size:30px;
+		color:#1C86EE;
+		position:absolute;
+		left:610px;
+		border-radius:5px;
+		box-shadow:1px 1px 3px #666;
+		z-index:1;
+		cursor:pointer;
+	}
+	.weibo-quote{
+		top:20px;
+	}
+	.twitter-quote{
+		top:85px;
+	}
+	#btn-new{
+		border-radius:3px;
+		background-color:#1C86EE;
+		border:none;
+		color:#fff;
+		font-size:16px;
+		line-height:40px;
+		margin-top:10px;
+		padding:0 20px;
+		cursor:pointer;
+	}
+	#btn-new:hover{
+		opacity:0.8;
+	}
+	#footer{
+		position:fixed;
+		left:20px;
+		bottom:10px;
+		color:#fff;
+		}
+	#footer a{
+		text-decoration:none;
+		color:#fff;
+	}
+	</style>
+	<script src = "../../js/jquery-3.2.1.min.js"></script>
+	<script src = "../../js/jquery-ui.min.js"></script>
+	<script>
+	//功能#1: 点击一个按钮就生存一个新的随机引用短语。
+
+	//功能#1: 点击一个按钮就把这个引用短语发到twitter中。
+
+
+	
+	var bgColors = ['#22c978','#32c922','#e0e72b','#ff6a18','#f8180d','#22b3c9','#7723be','#f150e8','#ec4c8c','#1C86EE'];
+	var quotes = [
+		{"id":0,
+		"quote":"我不怕千万人阻挡，只怕自己投降。",
+		"author":"——五月天《倔强》"},
+		{"id":1,
+		"quote":"人的思想如一口钟，容易停摆，需要经常上紧发条。",
+		"author":"——威赫兹里特"},
+		{"id":2,
+		"quote":"你知道白夜吗？明明是夜晚却有太阳，照得夜晚像白昼一样明亮，就是说一直这么犹豫不前的话，人生就毁了。",
+		"author":"——东野圭吾《白夜行》"},
+		{"id":3,
+		"quote":"一个人可以逃避世间的一切魔鬼，但惟有一个是他永远无法摆脱的，那就是懦弱的自己。",
+		"author":"——江南《龙族》"},
+		{"id":4,
+		"quote":"题诗寄汝非无意，莫负青春取自惭。",
+		"author":"——于谦"},
+		{"id":5,
+		"quote":"单是说不行，要紧的是做。",
+		"author":"——鲁迅"},
+		{"id":6,
+		"quote":"我们以为自己是理性的，我们以为自己的一举一动都是有其道理的。但事实上，我们的绝大多数日常行为，都是一些我们自己根本无法了解的隐蔽动机的结果。",
+		"author":"——古斯塔夫·勒庞《乌合之众》"},
+		{"id":7,
+		"quote":"时间不是流逝的，流逝的是我们",
+		"author":"——高铭《天才在左 疯子在右》"},
+		{"id":8,
+		"quote":"天下就没有偶然，那不过是化了妆的、戴了面具的必然。",
+		"author":"——钱钟书《围城》"},
+		{"id":9,
+		"quote":"机会不会上门来找人，只有人去找机会。",
+		"author":"——狄更斯《远大前程》"}];
+	var nextnum,currentnum;
+	var currentQuote,currentAuthor;
+	var bgColor;
+	
+	$(document).ready(function(){
+		currentnum = Math.floor(Math.random() * quotes.length);
+		$(".quote-text p").text(quotes[currentnum].quote);
+		$(".quote-text span").text(quotes[currentnum].author);
+		currentQuote = $(".quote-text p").text();
+		currentAuthor = $(".quote-text span").text();
+		
+		/*-- 按钮切换star --*/
+		$("#btn-new").click(function(){
+			bgColor = Math.floor(Math.random() * bgColors.length);
+			nextnum = Math.floor(Math.random() * quotes.length);
+			if(currentnum === nextnum){
+				nextnum += 1;
+				currentnum = nextnum;
+			}else{
+				currentnum = nextnum;
+			}
+			$("html body").animate({
+				backgroundColor:bgColors[bgColor]
+			},1000);
+			$(".quote-text").animate({
+				color:bgColors[bgColor]
+			},1000);
+			$("#btn-new").animate({
+				backgroundColor:bgColors[bgColor]
+			},1000);
+			$(".share").animate({
+				color:bgColors[bgColor]
+			},1000);
+			$(".quote-text p").animate({
+				opacity:0
+			},500,function(){
+				$(this).animate({
+					opacity:1
+				});
+				$(this).text(quotes[currentnum].quote);
+				currentQuote = $(this).text();
+			});
+			$(".quote-text span").animate({
+				opacity:0
+			},500,function(){
+				$(this).animate({
+					opacity:1
+				});
+			$(this).text(quotes[currentnum].author);
+			currentAuthor = $(this).text();
+			});
+		});
+		/*-- 按钮切换end --*/
+		/*-- 微博分享和twitter分享事件star --*/
+		$(".weibo-quote").mouseenter(function(){
+			$(".weibo-quote").animate({
+				left:'620px'
+			});
+		});
+		$(".weibo-quote").mouseleave(function(){
+			$(".weibo-quote").animate({
+				left:'610px'
+			});
+		});
+		$(".twitter-quote").mouseenter(function(){
+			$(".twitter-quote").animate({
+				left:'620px'
+			});
+		});
+		$(".twitter-quote").mouseleave(function(){
+			$(".twitter-quote").animate({
+				left:'610px'
+			});
+		});
+		var link = "";
+		var text = "";
+		$(".weibo-quote").click(function(){
+			text = currentQuote + currentAuthor;
+			link = "http://service.weibo.com/share/share.php?title=" + text;
+			window.open(link);
+		});
+		$(".twitter-quote").click(function(){
+			text = currentQuote + currentAuthor;
+			link = "https://twitter.com/intent/tweet?text=" + text;
+			window.open(link);
+		});
+		/*-- 微博分享和twitter分享事件end --*/
+
+	});
+	</script>
+</head>
+<body>
+	<div class = "quote-box">
+		<div class = "quote-text">
+		<p></p>
+		<span></span>
+		<button class = "button" id = "btn-new">New quote</button>
+	</div>  
+	<a class = "share weibo-quote" title = "分享到微博" target = "_blank">
+		<i class = "fa fa-weibo" aria-hidden = "true"></i>
+	</a>
+	<a class = "share twitter-quote" title = "分享到twitter" target = "_blank">
+		<i class = "fa fa-twitter" aria-hidden="true"></i>
+	</a>
+	</div>
+	<div id = "footer">
+		By <a href = "https://codepen.io/layuecr" title = "cRCHAN的codepen">cRCHAN</a>
+	</div>
+</body>
+</html>

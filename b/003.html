@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>轮播——淡入淡出</title>
+	<style>
+		*{
+			margin:0;
+			padding:0;
+		}
+		ul,li{
+			list-style:none;
+		}
+		body{
+			background:#333;
+			font:14px/1.5 Arial;
+		}
+		#box{
+			width:752px;
+			height:302px;
+			border:5px solid #fff;
+			margin:10px auto;
+			border-radius:5px;
+			background:#ccc;
+			position:relative;
+		}
+		#box .list{
+			width:750px;
+			height:300px;
+			border:1px solid #ccc;
+			position:relative;
+		}
+		#box .list li{
+			position:absolute;
+			top:0;
+			left:0;
+			width:750px;
+			height:300px;
+			opacity:0;
+		}
+		#box .list li.current{
+			opacity:1;
+		}
+		#box .count{
+			position:absolute;
+			right:5px;
+			bottom:5px;
+		}
+		#box .count li{
+			display:inline-block;
+			text-align:center;
+			cursor:pointer;
+			width:22px;
+			height:22px;
+			line-height:22px;
+			background:#3A5FCD;
+			color:#fff;
+			opacity:.7;
+			border-radius:50%;
+			margin-right:2px;
+		}
+		#box .count li.current{
+			background:#0000EE;
+		}
+	</style>
+	<script>
+		window.onload = function(){
+			var oBox = document.getElementById("box");
+			var aUi = oBox.getElementsByTagName("ul");
+			var aImg = aUi[0].getElementsByTagName("li");
+			var aCount = aUi[1].getElementsByTagName("li");
+			var play,showtime = null;
+			var i,index = 0;
+			autoPlay();
+			oBox.onmouseover = function(){
+				clearInterval(play);
+			};
+			oBox.onmouseout = function(){
+				autoPlay();
+			};
+			for(i = 0; i < aCount.length; i++){
+				aCount[i].index = i;
+				aCount[i].onmouseover = function(){
+					show(this.index);
+				}
+			}
+			function autoPlay(){
+				play = setInterval(function(){
+					index ++;
+					(index >= aImg.length) && (index = 0);
+					show(index);
+				},3000);
+			}
+			function show(a){
+				index = a;
+				var alpha = 0;
+				clearInterval(showtime);
+				for(i = 0; i < aCount.length; i++){
+					aCount[i].className = "";
+				}
+				aCount[index].className = "current";
+				for(i = 0; i < aImg.length; i++){
+					aImg[i].style.opacity = 0;
+				}
+				showtime = setInterval(function(){
+					alpha += 2;
+					(alpha > 100) && (alpha = 100);
+					aImg[index].style.opacity = alpha/100;
+					(alpha == 100) && (clearInterval(showtime));
+				},20);
+			}
+		}
+	</script>
+</head>
+<body>
+	<div id="box">
+		<ul class="list">
+			<li class = "current"><img src="images/01.jpg" alt=""></li>
+			<li><img src="images/02.jpg" alt=""></li>
+			<li><img src="images/03.jpg" alt=""></li>
+			<li><img src="images/04.jpg" alt=""></li>
+			<li><img src="images/05.jpg" alt=""></li>
+			<li><img src="images/06.jpg" alt=""></li>
+		</ul>
+		<ul class="count">
+			<li class = "current">1</li>
+			<li>2</li>
+			<li>3</li>
+			<li>4</li>
+			<li>5</li>
+			<li>6</li>
+		</ul>
+	</div>
+</body>
+</html>

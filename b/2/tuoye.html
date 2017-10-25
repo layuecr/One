@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>拖曳1——小方块</title>
+	<style>
+		*{
+			margin:0;
+			padding:0;
+		}
+		body{
+			background:#ccc;
+		}
+		#box{
+			width:100px;
+			height:100px;
+			background:green;
+			position:absolute;
+			top:30px;
+			left:20px;
+		}
+	</style>
+	<script>
+		window.onload = function(){
+			var oBox = document.getElementById("box");
+			
+			oBox.onmousedown = fnDown;
+			oBox.onmouseup = function(){
+				document.onmousemove = null;
+				document.onmouseup = null;
+				document.onmousedown = null;
+			}
+			
+			function fnDown(event){
+				event = event || window.event;
+				var difX = event.clientX - oBox.offsetLeft, //offsetLeft: 盒子的左边距到浏览器的左边框的距离
+				    difY = event.clientY - oBox.offsetTop;
+				
+				document.onmousemove = function(event){
+					event = event || window.event;
+					fnMove(event, difX, difY);
+				}
+			}
+			
+			function fnMove(e, x, y){
+				var positionX = e.clientX - x,
+				    positionY = e.clientY - y,
+					maxX = (document.documentElement.clientWidth || document.body.clientWidth) - oBox.offsetWidth,
+					//documentElement兼容大多数浏览器，body适用于IE浏览器
+					//offsetWidth用来获取一个盒子的宽度
+					maxY = (document.documentElement.clientHeight || document.body.clientHeight) - oBox.offsetHeight;
+				if(positionX < 0){
+					positionX = 0;
+				}else if(positionX > maxX){
+					positionX = maxX;
+				}
+				if(positionY < 0){
+					positionY = 0;
+				}else if(positionY > maxY){
+					positionY = maxY;
+				}
+				oBox.style.left = positionX + "px";
+				oBox.style.top = positionY + "px";
+			}
+		}
+	</script>
+</head>
+<body>
+	<div id="box"></div>
+</body>
+</html>

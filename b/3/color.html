@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>尝试获取颜色</title>
+	<style>
+		*{
+			padding:0;
+			margin:0;
+		}
+		.container{
+			width:1024px;
+			margin:20px auto;
+		}
+		#rgba{
+			text-align:center;
+			color:#333;
+			font:16px/1.5 Arial;
+		}
+		#color{
+			display:inline-block;
+			width:40px;
+			height:20px;
+			border:1px solid #aaa;
+		}
+		#color-code{
+			vertical-align:top;
+			margin-left:10px;
+		}
+	</style>
+</head>
+<body>
+	<div class = "container">
+		<canvas id = "myCanvas" width = "1024px" height = "500px">您的浏览器不支持canvas标签</canvas>
+	</div>
+	<div id="rgba">
+		<span id="color"></span>
+		<span id = "color-code">d</span>
+	</div>
+</body>
+<script>
+	//触发onmousedown事件，再触发onmousemove事件
+	//onmousemove事件是为了移动鼠标的时候也能够识别变换读取的颜色
+	//onmouseenter看下能不能阻止鼠标读取到canvas外面的颜色，因为读到外面就会出错，发现了，其实就是边框的问题，去掉边框就好了
+	//明天整理一下，把代码写干净些
+	//可以在canvas外面的div上加边框，这样就不会被读取到啦。明天试试。。晚安
+	<!-- onmouseover、nmouseout：鼠标移动到自身时候会触发事件，同时移动到其子元素身上也会触发事件 -->
+
+	<!-- onmouseenter、onmouseleave：鼠标移动到自身是会触发事件，但是移动到其子元素身上不会触发事件 -->
+	var c = document.getElementById("myCanvas");
+	var ctx = c.getContext("2d");
+	var grd = ctx.createLinearGradient(0,0,1024,0);
+	
+	grd.addColorStop(0, "black");
+	grd.addColorStop("0.5", "red");
+	grd.addColorStop(1, "white");
+	ctx.fillStyle = grd;
+	ctx.fillRect(0,0,1024,500);
+	var oColor = document.getElementById("color");
+		    oColorCode = document.getElementById("color-code");
+	<!-- document.body.onmousedown = function(){ -->
+		<!-- oColor.style.background = "#fff"; -->
+		<!-- oColorCode.innerHTML = "#fff"; -->
+	<!-- } -->
+	c.onmousedown = function(event){
+		event = event || window.event;
+		var mouseX = event.clientX - c.offsetLeft,
+		    mouseY = event.clientY - c.offsetTop, //canvas读取像素点，是从画布的左上角开始读取的，所以需要做下减法。
+			imgData = ctx.getImageData(mouseX, mouseY, 1, 1);
+		var red = imgData.data[0].toString(16),
+		    green = imgData.data[1].toString(16),
+			blue = imgData.data[2].toString(16);
+		if(red.length !== 2){
+			red = "0" + red;
+		}
+		if(green.length !== 2){
+			green = "0" + green;
+		}
+		if(blue.length !== 2){
+			blue = "0" + blue;
+		}
+		var colorCode = "#" + red + green + blue;
+		oColor.style.background = colorCode;
+		oColorCode.innerHTML = colorCode;
+	}
+</script>
+</html>

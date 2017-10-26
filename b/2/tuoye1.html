@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>test</title>
+	<style>
+		*{
+			margin:0;
+			padding:0;
+		}
+		html,body{
+			height:100%;
+		}
+		.box{
+			display:flex;
+			height:100%;
+		}
+		.red,
+		.yellow,
+		.blue{
+			height:100%;
+		}
+		.red{
+			width:33.33%;
+			background:#FF6347;
+		}
+		.yellow{
+			background:#f8f681;
+			flex:1;
+		}
+		.blue{
+			width:33.33%;
+			background:#9be1ed;
+		}
+		
+		#circle{
+			width:100px;
+			height:100px;
+			position:absolute;
+			border:2px solid #fff;
+			border-radius:50%;
+			top:0;
+			left:0;
+			z-index:2;
+			background:rgba(255,255,255,0.5);
+			cursor: move;
+		}
+	</style>
+	<script>
+		window.onload = function(){
+			var oCircle = document.getElementById("circle");
+			oCircle.onmousedown = fnDown;
+			oCircle.onmouseup = function(){
+				document.onmousemove = null;
+				document.onmouseup = null;
+				document.onmousedowm = null;
+			}
+			
+			function fnDown(event){
+				event = event || window.event;
+				var difX = event.clientX - oCircle.offsetLeft,
+				    difY = event.clientY - oCircle.offsetTop;
+				document.onmousemove = function(event){
+					event = event || window.event;
+					fnMove(event, difX, difY);
+				}
+			}
+			
+			function fnMove(e, x, y){
+				var mouseX = e.clientX - x,
+				    mouseY = e.clientY - y,
+					maxX = (document.documentElement.clientWidth || document.body.clientWidth) - oCircle.offsetWidth,
+					maxY = (document.documentElement.clientHeight || document.body.clientHeight) - oCircle.offsetHeight;
+				if(mouseX < 0){
+					mouseX = 0;
+				}else if(mouseX > maxX){
+					mouseX = maxX;
+				}
+				if(mouseY < 0){
+					mouseY = 0;
+				}else if(mouseY > maxY){
+					mouseY = maxY;
+				}
+				oCircle.style.left = mouseX + "px";
+				oCircle.style.top = mouseY + "px";
+			}
+		}
+	</script>
+</head>
+<body>
+	<div class="box">
+		<div class="red"></div>
+		<div class="yellow"></div>
+		<div class="blue"></div>
+	</div>
+	<div id="circle"></div>
+</body>
+</html>

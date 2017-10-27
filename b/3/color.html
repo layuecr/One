@@ -2,20 +2,29 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>尝试获取颜色</title>
+	<title>读取颜色代码（拾色器）</title>
 	<style>
 		*{
 			padding:0;
 			margin:0;
 		}
 		.container{
-			width:1024px;
-			margin:20px auto;
-		}
-		#rgba{
-			text-align:center;
-			color:#333;
 			font:16px/1.5 Arial;
+			color:#333;
+			min-width:1024px;
+		}
+		.box{
+			width:800px;
+			height:300px;
+			margin:20px auto;
+			border:2px solid #ccc;
+			position:relative;
+		}
+		#myCanvas{
+			position:relative;
+		}
+		.rgba{
+			text-align:center;
 		}
 		#color{
 			display:inline-block;
@@ -27,61 +36,166 @@
 			vertical-align:top;
 			margin-left:10px;
 		}
+		.choose-box{
+			position:absolute;
+			font-weight:700;
+			width:100px;
+			left:-100px;
+			top:0;
+		}
+		.choose-box .choose{
+			display:block;
+			width:60px;
+			height:30px;
+			color:#fff;
+			text-align:center;
+			line-height:30px;
+			margin-left:10px;
+			margin-bottom:1px;
+			cursor:pointer;
+		}
+		.choose-box .choose-text{
+			font-size:20px;
+			display:block;
+			margin-bottom:20px;
+			margin-top:20px;
+		}
+		.choose-box .red{
+			background:red;
+		}
+		.choose-box .orange{
+			background:orange;
+		}
+		.choose-box .yellow{
+			background:yellow;
+		}
+		.choose-box .green{
+			background:green;
+		}
+		.choose-box .cyan{
+			background:cyan;
+		}
+		.choose-box .blue{
+			background:blue;
+		}
+		.choose-box .purple{
+			background:purple;
+		}
 	</style>
-</head>
-<body>
-	<div class = "container">
-		<canvas id = "myCanvas" width = "1024px" height = "500px">您的浏览器不支持canvas标签</canvas>
-	</div>
-	<div id="rgba">
-		<span id="color"></span>
-		<span id = "color-code">d</span>
-	</div>
-</body>
-<script>
+	<script>
+		window.onload = function(){
+			var c = document.getElementById("myCanvas"),
+			    ctx = c.getContext("2d"),
+				grd;
+			var oBox = document.querySelector(".box"),
+			    oColor = document.getElementById("color"),
+				oColorCode = document.getElementById("color-code"),
+				arrayColor = document.querySelectorAll(".choose"); //为一个数组，包含7个对象
+			//绘制刚进入界面的渐变页面
+			ChooseColor("red");
+			//鼠标点击渐变触发fnDown函数
+			c.onmousedown = fnDown;
+			//释放鼠标事件 
+			c.onmouseup = function(){
+				document.onmousemove = null;
+				document.onmouseup = null;
+				document.onmousedown = null;
+			}
+			//鼠标按下事件，读取按下的坐标。坐标是距离画布左上角的坐标。
+			function fnDown(event){
+				event = event || window.event;
+				var pointX = event.clientX - oBox.offsetLeft,
+				    pointY = event.clientY - oBox.offsetTop;
+				getColor(pointX, pointY);
+				document.onmousemove = fnMove;
+			}
+			//鼠标移动事件，在画布上移动鼠标也可以进行颜色代码的读取
+			function fnMove(event){
+				event = event || window.event;
+				var mouseX = event.clientX - oBox.offsetLeft,
+				    mouseY = event.clientY - oBox.offsetTop;
+				getColor(mouseX, mouseY);
+			}
+			//读取颜色代码函数
+			function getColor(x, y){
+				var imgData = ctx.getImageData(x, y, 1, 1),
+					imgRed = imgData.data[0].toString(16),
+					imgGreen = imgData.data[1].toString(16),
+					imgBlue = imgData.data[2].toString(16),
+					colorCode;
+				if(imgRed.length !== 2){
+					imgRed = "0" + imgRed;
+				}
+				if(imgGreen.length !== 2){
+					imgGreen = "0" + imgGreen;
+				}
+				if(imgBlue.length !== 2){
+					imgBlue = "0" + imgBlue;
+				}
+				colorCode = "#" + imgRed + imgGreen + imgBlue;
+				oColor.style.background = colorCode;
+				oColorCode.innerHTML = colorCode.toUpperCase();
+			}
+			//循环体用于写改变颜色区域的点击事件，改变画布的中间渐变色
+			for(var i = 0; i < arrayColor.length; i++){
+				arrayColor[i].onclick = function(){
+					ChooseColor(this.id);
+					oColor.style.background = this.id;
+					if(this.id == "red"){
+						oColorCode.innerHTML = "#FF0000";
+					}else if(this.id == "orange"){
+						oColorCode.innerHTML = "#FFA500";
+					}else if(this.id == "yellow"){
+						oColorCode.innerHTML = "#FFFF00";
+					}else if(this.id == "green"){
+						oColorCode.innerHTML = "#008000";
+					}else if(this.id == "cyan"){
+						oColorCode.innerHTML = "#00FFFF";
+					}else if(this.id == "blue"){
+						oColorCode.innerHTML = "#0000FF";
+					}else if(this.id == "purple"){
+						oColorCode.innerHTML = "#800080";
+					}
+				}
+			}
+			//在画布上画渐变矩形
+			function ChooseColor(color){
+				c.height = c.height;
+				grd = ctx.createLinearGradient(0,0,800,0);
+				grd.addColorStop(0,"#000");
+				grd.addColorStop(0.5, color);
+				grd.addColorStop(1,"#FFF");
+				ctx.fillStyle = grd;
+				ctx.fillRect(0,0,800,500);
+			}
+		}
 	//触发onmousedown事件，再触发onmousemove事件
 	//onmousemove事件是为了移动鼠标的时候也能够识别变换读取的颜色
-	//onmouseenter看下能不能阻止鼠标读取到canvas外面的颜色，因为读到外面就会出错，发现了，其实就是边框的问题，去掉边框就好了
-	//明天整理一下，把代码写干净些
-	//可以在canvas外面的div上加边框，这样就不会被读取到啦。明天试试。。晚安
 	<!-- onmouseover、nmouseout：鼠标移动到自身时候会触发事件，同时移动到其子元素身上也会触发事件 -->
-
 	<!-- onmouseenter、onmouseleave：鼠标移动到自身是会触发事件，但是移动到其子元素身上不会触发事件 -->
-	var c = document.getElementById("myCanvas");
-	var ctx = c.getContext("2d");
-	var grd = ctx.createLinearGradient(0,0,1024,0);
-	
-	grd.addColorStop(0, "black");
-	grd.addColorStop("0.5", "red");
-	grd.addColorStop(1, "white");
-	ctx.fillStyle = grd;
-	ctx.fillRect(0,0,1024,500);
-	var oColor = document.getElementById("color");
-		    oColorCode = document.getElementById("color-code");
-	<!-- document.body.onmousedown = function(){ -->
-		<!-- oColor.style.background = "#fff"; -->
-		<!-- oColorCode.innerHTML = "#fff"; -->
-	<!-- } -->
-	c.onmousedown = function(event){
-		event = event || window.event;
-		var mouseX = event.clientX - c.offsetLeft,
-		    mouseY = event.clientY - c.offsetTop, //canvas读取像素点，是从画布的左上角开始读取的，所以需要做下减法。
-			imgData = ctx.getImageData(mouseX, mouseY, 1, 1);
-		var red = imgData.data[0].toString(16),
-		    green = imgData.data[1].toString(16),
-			blue = imgData.data[2].toString(16);
-		if(red.length !== 2){
-			red = "0" + red;
-		}
-		if(green.length !== 2){
-			green = "0" + green;
-		}
-		if(blue.length !== 2){
-			blue = "0" + blue;
-		}
-		var colorCode = "#" + red + green + blue;
-		oColor.style.background = colorCode;
-		oColorCode.innerHTML = colorCode;
-	}
 </script>
+</head>
+<body>
+	<div class="container">
+		<div class = "box">
+			<canvas id = "myCanvas" width = "800px" height = "300px">您的浏览器不支持canvas标签</canvas>
+			<div class="choose-box">
+				<span class="choose-text">改变颜色</span>
+				<span class="choose red" id = "red">红</span>
+				<span class="choose orange" id = "orange">橙</span>
+				<span class="choose yellow" id = "yellow">黄</span>
+				<span class="choose green" id = "green">绿</span>
+				<span class="choose cyan" id = "cyan">青</span>
+				<span class="choose blue" id = "blue">蓝</span>
+				<span class="choose purple" id = "purple">紫</span>
+			</div>
+		</div>
+		<div class="rgba">
+			<span id="color" style = "background:red;"></span>
+			<span id = "color-code">#FF0000</span>
+		</div>
+		
+	</div>
+</body>
+
 </html>

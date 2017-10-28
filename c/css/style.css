@@ -1,0 +1,67 @@
+html,body{
+	height:100%;
+	overflow:hidden;
+}
+body{
+	background-image:url(../images/bg_1.jpg);
+	background-size:cover;
+	color:#fff;
+}
+.ui-index{
+	position: absolute;
+    top: 50%;
+    margin-top: -187px;
+	width: 100%;
+	display:none;
+}
+.ui-index h1{
+	font-size: 50px;
+    text-shadow: 2px 8px 2px #000;
+    text-align: center;
+}
+.ui-index .btn{
+	display: block;
+    width: 140px;
+    border: 1px solid #999;
+    border-radius: 6px;
+    background: none;
+    font-size: 20px;
+    color: #fff;
+	margin:0 auto 14px;
+}
+.ui-panel{
+	width: 80%;
+    padding: 14px;
+    border: 2px solid #fff;
+    background: #070808;
+    box-sizing: border-box;
+    text-align: center;
+    border-radius: 8px;
+	position: absolute;
+    top: 50%;
+    margin-top: -134px;
+    left: 10%;
+}
+.ui-panel button{
+	font-size: 16px;
+    border: 2px solid #fff;
+    background: none;
+    color: #fff;
+	border-radius: 3px;
+}
+.ui-rule{
+	display:none;
+}
+.setting-group{
+	list-style:none;
+	padding:0;
+}
+.setting-group .setting{
+	margin-bottom:10px;
+	text-align:center;
+}
+.setting-group select{
+	background: #fff;
+    width: 100px;
+    margin-left: 10px;
+}

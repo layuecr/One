@@ -12,7 +12,6 @@ body{
     top: 50%;
     margin-top: -187px;
 	width: 100%;
-	display:none;
 }
 .ui-index h1{
 	font-size: 50px;
@@ -49,9 +48,6 @@ body{
     color: #fff;
 	border-radius: 3px;
 }
-.ui-rule{
-	display:none;
-}
 .setting-group{
 	list-style:none;
 	padding:0;
@@ -64,4 +60,13 @@ body{
 	background: #fff;
     width: 100px;
     margin-left: 10px;
+}
+
+.ui-panel{
+	display:none;
+}
+
+canvas{
+	padding:0;
+	margin:0;
 }

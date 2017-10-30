@@ -5,15 +5,16 @@
 	<meta name = "viewport" content = "width=device-width, initial-scale=1.0">
 	<title>打飞机</title>
 	<link rel="stylesheet" href="css/style.css">
-	<script src="js/script.js"></script>
+	
 </head>
 <body>
+	<canvas id = "game" width = "359" height = "667"></canvas> 
 	<div class="ui-index">
 		<h1>飞机大作战</h1>
 		<div class="btn-group">
-			<button class="btn">开始游戏</button>
-			<button class="btn">游戏设置</button>
-			<button class="btn">游戏说明</button>
+			<button class="js-start btn">开始游戏</button>
+			<button class="js-setting btn">游戏设置</button>
+			<button class="js-rule btn">游戏说明</button>
 		</div>
 	</div>
 	<div class="ui-panel ui-rule">
@@ -51,4 +52,5 @@
 		<button>确认设置</button>
 	</div>
 </body>
+<script src="js/script.js"></script>
 </html>

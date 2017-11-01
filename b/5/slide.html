@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>隐藏滑动</title>
+	<style>
+		*{
+			padding:0;
+			margin:0;
+			box-sizing:border-box;
+		}
+		#div1{
+			position:relative;
+			width:200px;
+			height:300px;
+			background:#fff;
+			border:3px solid #7eec6a;
+			border-radius:5px;
+			margin-top:75px;
+			left:-200px;
+			<!-- left: -3px; -->
+			
+			
+		}
+		.share{
+			display:block;
+			position:absolute;
+			width:34px;
+			height:80px;
+			top: 30px;
+			left: 194px;
+			background: #7eec6a;
+			border-radius:3px;
+			font-size: 23px;
+			color: #fff;
+			font-weight: 700;
+			padding-top: 8px;
+			padding-left: 6px;
+			cursor:pointer;
+		}
+	</style>
+	<script>
+		window.onload = function(){
+			var oDiv = document.getElementById("div1");
+			var timer = null;
+			oDiv.onmouseover = function(){
+				Move(0);
+			};
+			oDiv.onmouseout = function(){
+				Move(-200);
+			}
+			
+			function Move(iTarget){
+				clearInterval(timer);
+				timer = setInterval(function(){
+					var speed = (iTarget - oDiv.offsetLeft) / 10;
+					speed = speed > 0 ? Math.ceil(speed) : Math.floor(speed);
+					if(oDiv.offsetLeft == iTarget){
+						clearInterval(timer);
+					}else{
+						oDiv.style.left = oDiv.offsetLeft + speed + "px";
+					}
+				},30);
+			}
+		}
+	</script>
+</head>
+<body>
+	<div id = "div1"><span class = "share">分享</span></div>
+</body>
+</html>

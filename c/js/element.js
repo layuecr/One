@@ -20,12 +20,12 @@ Element.prototype = {
 		var addX = x || 0;
 		var addY = y || 0;
 		this.x += x;
-		this.y += y; //+y是为了保持一个速度运动下去
+		this.y += y; //+y是为了保持	一个速度运动下去
 	}
 	/* 
 	  这个draw方法没什么用
 	 */
-	draw: function(){
+	 // draw: function(){
 		
-	}
+	 // }
 };

@@ -78,6 +78,15 @@ var GAME = {
 		this.enemies = [];
 		this.score = 0;
 		
+		//随机生成大小敌机
+		this.createSmallEnemyInterval = setInterval(function(){
+			self.createEnemy('normal');
+		},500);
+		this.createBigEnemyInterval = setInterval(function(){
+			self.createEnemy('big');
+		},2500);
+		
+		//开始更新游戏
 		this.update();
 	},
 	update: function(){
@@ -96,7 +105,21 @@ var GAME = {
 		});
 	},
 	updateElement: function(){
+		/* 更新当前所有元素的状态 */
+		var opts = this.opts;
+		var enemies = this.enemies;
+		var enemySize = this.enemySize;
+		var i = enemies.length;
 		
+		while(i--){
+			var enemy = enemies[i];
+			enemy.down();
+			if(enemy.y >= canvas.height){
+				this.enemies.splice(i, 1);
+			}else{
+				//判断飞机状态	
+			}
+		}
 	},
 	//生成敌机
 	createEnemy: function(enemyType){
@@ -106,17 +129,21 @@ var GAME = {
 		
 		var enemySpeed = opts.enemySpeed;
 		var enemySize = opts.enemySmallSize;
+		var enemyIcon = resourceHelper.getImage('smallEnemyIcon');
+		var enemyBoomIcon = resourceHelper.getImage('smallBoomIcon');
 		
 		var enemyLive = 1; //默认生命值为1
 		//大型敌机参数
 		if(enemyType === 'big'){
 			enemySize = opts.enemyBigSize;
 			enemySpeed = enemySpeed * 0.6;
+			enemyIcon = resourceHelper.getImage('bigEnemyIcon');
+			enemyBoomIcon = resourceHelper.getImage('bigBoomIcon');
 			enemyLive = 10;
 		}
 		//基本参数
 		var initOpt = {
-			x: Math.floor(Math.random(canvasWidth - enemySize.width)),
+			x: Math.floor(Math.random() * (canvasWidth - enemySize.width)),
 			y: -enemySize.height, //完全不显现在画布上，向下走才会显示
 			enemyType: enemyType,
 			live: enemyLive,
@@ -124,10 +151,10 @@ var GAME = {
 			height: enemySize.height,
 			speed: enemySpeed,
 			icon: enemyIcon,
-			boomIcon, enemyBoomIcon
+			boomIcon: enemyBoomIcon
 		};
 		//敌机数量少于设定值，则不断新增
-		if(enemies.length < enemyMaxNum){
+		if(enemies.length < opts.enemyMaxNum){
 			enemies.push(new Enemy(initOpt));
 		}
 		console.log(enemies);
@@ -136,13 +163,17 @@ var GAME = {
 		
 	},
 	draw: function(){
-		
+		this.enemies.forEach(function(enemy){
+			enemy.draw();
+		});
 	}
 };
 
 function init(){
-	GAME.init();
-	bindEvent();
+	resourceHelper.load(CONFIG.resources, function(resources){
+		GAME.init();
+		bindEvent();
+	});
 }
 
 init();

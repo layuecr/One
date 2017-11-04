@@ -12,6 +12,9 @@ var Enemy = function(opts){
 	this.icon = opts.icon;
 	this.live = opts.live;  //生命值
 	this.type = opts.type;
+	
+	// this.boomIcon = opts.boomIcon;
+	// this.boomCount = 0;
 }
 
 //继承Element属性
@@ -23,5 +26,15 @@ Enemy.prototype.down = function(){
 };
 
 Enemy.prototype.draw = function(){
-	context.fillRect(this.x, this.y, this.width, this.height);
+	//ctx.fillRect(this.x, this.y, this.width, this.height); //绘画方块，先试验
+	//绘制敌机
+	switch(this.status){
+		case 'normal': 
+			ctx.drawImage(this.icon, this.x, this.y, this.width, this.height);
+			break;
+		case 'booming':
+			ctx.drawImage(this.boomIcon, this.x, this.y, this.width, this.height);
+			break;
+	}
+	
 }

@@ -15,43 +15,65 @@ var CONFIG = {
 	},
 	enemySpeed: 4, //敌机默认移动距离
 	enemyMaxNum: 5, //最大的敌机数量
-	ememySmallSize: { //最小的敌机尺寸
+	enemySmallSize: { //最小的敌机尺寸
 		width: 54,
 		height: 40
 	},
-	ememyBigSize: { //大敌机的尺寸
+	enemyBigSize: { //大敌机的尺寸
 		width: 130,
 		height: 100
 	},
 	resources: {
-		image: [
+		images: [
 		  { 
-			src: "../images/plane_1.png",
+			src: "./images/plane_1.png",
 		    name: "bluePlaneIcon"
 		  },
 		  {
-			src: "../images/plane_2.png",
+			src: "./images/plane_2.png",
 			name: "pinkPlaneIcon"
 		  },
 		  {
-			src: "../images/fire.png",
+			src: "./images/fire.png",
 			name: "fireIcon"
 		  },
 		  {
-			src: "../images/boom_big.png",
+			src: "./images/boom_big.png",
 			name: "bigBoomIcon"
 		  },
 		  {
-			src: "../images/boom_small.png",
+			src: "./images/boom_small.png",
 			name: "smallBoomIcon"
 		  },
 		  {
-			src: "../images/enemy_big.png",
+			src: "./images/enemy_big.png",
 			name: "bigEnemyIcon"
 		  },
 		  {
-			src: "../images/enemy_small.png",
+			src: "./images/enemy_small.png",
 			name: "smallEnemyIcon"
+		  }
+		],
+		sounds: [
+		  {
+			src: "./sounds/button.mp3",
+			name: "buttonSound"
+		  },
+		  {
+			src: "./sounds/biubiubiu.mp3",
+			name: "shootSound"
+		  },
+		  {
+			src: "./sounds/boom.mp3",
+			name: "boomSound.mp3"
+		  },
+		  {
+			src: "./sounds/die.mpp3",
+			name: "dieSound.mp3"
+		  },
+		  {
+			src: "./sounds/music.mp3",
+			name: "gameSound.mp3"
 		  }
 		]
 	}

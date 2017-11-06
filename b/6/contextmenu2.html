@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>重定义右键菜单</title>
+<style>
+	*{
+		padding:0;
+		margin:0;
+	}
+	ul,li{
+		list-style:none;
+	}
+	a{
+		text-decoration:none;
+	}
+	p{
+		text-align:center;
+		margin-top:10px;
+	}
+	#menu{
+		border-radius:3px;
+		border:1px solid #999;
+		width:80px;
+		font:14px/1.5 Arial;
+		color:#666;
+		padding:2px;
+		position:absolute;
+		background:#fff;
+	}
+	#menu li a{
+		color:#666;
+		cursor:pointer;
+		display:block;
+		width:76px;
+		padding:2px;
+	}
+	#menu li a:hover{
+		background:#ccc;
+	}
+</style>
+<script>
+window.onload = function(){
+	var menu = document.getElementById("menu");
+	var aLi = menu.getElementsByTagName("li");
+	
+	menu.style.display = "none"; //加载完毕使列表隐藏
+	
+	document.oncontextmenu = function(event){
+		var event = event || window.event; //传入event
+		
+		menu.style.top = event.clientY + "px";
+		menu.style.left = event.clientX + "px";
+		menu.style.display = "block";
+		
+		return false; //阻止右键默认菜单
+	}
+	
+	document.onclick = function(){
+		menu.style.display = "none";
+	}
+}
+</script>
+</head>
+<body>
+	<p>右键菜单已改变，请在页面点击鼠标右键查看效果</p>
+	<ul id = "menu">
+		<li><a href="javascript:;">剪切</a></li>
+		<li><a href="javascript:;">复制</a></li>
+		<li><a href="javascript:;">粘贴</a></li>
+	</ul>
+</body>
+</html>
